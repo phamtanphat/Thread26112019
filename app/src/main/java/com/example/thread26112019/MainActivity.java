@@ -15,25 +15,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // 1 : Khoi tao ra thread
-
-//        TaskThread taskThread = new TaskThread();
-//        taskThread.run();
-//        Thread thread = new Thread(new RunableWork());
-//        thread.start();
-        final Thread thread = new Thread(new Runnable() {
+        Thread threada = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("BBB","Runnable runing");
+                for (int i = 0 ; i <= 10 ; i++){
+                    Log.d("BBB", "A " + i);
+                }
             }
         });
-        thread.start();
 
-        new Handler().postDelayed(new Runnable() {
+        Thread threadb = new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("BBB",thread.getState().toString());
+                for (int i = 0 ; i <= 10 ; i++){
+                    Log.d("BBB", "B " + i);
+                }
             }
-        },1000);
+        });
+        threada.start();
+        threadb.start();
+
     }
 
 }
