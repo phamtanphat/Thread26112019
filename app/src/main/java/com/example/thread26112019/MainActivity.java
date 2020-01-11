@@ -9,14 +9,15 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    int a , b , c;
+    int a, b, c;
     Laco laco;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        a = b = c =0;
+        a = b = c = 0;
         laco = new Laco(0);
         // 1 : Khoi tao ra thread
         //2 : Quan ly luong theo object
@@ -26,28 +27,45 @@ public class MainActivity extends AppCompatActivity {
         Thread threada = new Thread(new Runnable() {
             @Override
             public void run() {
-               for (int i = 0 ; i <= 50 ; i++){
-                   a = i;
-                   Log.d("BBB", "A " + a);
-               }
+                synchronized (laco) {
+                    for (int i = 0; i <= 50; i++) {
+                        if (laco.dem == 0){
+                            a = i;
+                            Log.d("BBB", "A " + a);
+                            laco.dem = 1;
+                        }
+                    }
+                }
+
             }
         });
 
         Thread threadb = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0 ; i <= 50 ; i++){
-                    b = i;
-                    Log.d("BBB", "B " + b);
+                synchronized (laco){
+                    for (int i = 0; i <= 50; i++) {
+                        if (laco.dem == 1){
+                            b = i;
+                            Log.d("BBB", "B " + b);
+                            laco.dem = 2;
+                        }
+
+                    }
                 }
             }
         });
         Thread threadc = new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0 ; i <= 50 ; i++){
-                    c =  a + b;
-                    Log.d("BBB", "C " + c);
+                synchronized (laco){
+                    for (int i = 0; i <= 50; i++) {
+                       if (laco.dem == 2){
+                           c = a + b;
+                           Log.d("BBB", "C " + c);
+                           laco.dem = 0;
+                       }
+                    }
                 }
             }
         });
