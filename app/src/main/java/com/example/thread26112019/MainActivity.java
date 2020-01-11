@@ -10,12 +10,14 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     int a , b , c;
+    Laco laco;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         a = b = c =0;
+        laco = new Laco(0);
         // 1 : Khoi tao ra thread
         //2 : Quan ly luong theo object
         // a : 1
