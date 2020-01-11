@@ -28,11 +28,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 synchronized (laco) {
-                    for (int i = 0; i <= 50; i++) {
+                    for (int i = 0; i <= 50; ) {
                         if (laco.dem == 0){
                             a = i;
                             Log.d("BBB", "A " + a);
                             laco.dem = 1;
+                            i++;
+                            laco.notifyAll();
+                        }else{
+                            try {
+                                laco.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -44,11 +52,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 synchronized (laco){
-                    for (int i = 0; i <= 50; i++) {
+                    for (int i = 0; i <= 50; ) {
                         if (laco.dem == 1){
                             b = i;
                             Log.d("BBB", "B " + b);
                             laco.dem = 2;
+                            i++;
+                            laco.notifyAll();
+                        }else{
+                            try {
+                                laco.wait();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
 
                     }
@@ -59,11 +75,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 synchronized (laco){
-                    for (int i = 0; i <= 50; i++) {
+                    for (int i = 0; i <= 50;) {
                        if (laco.dem == 2){
                            c = a + b;
                            Log.d("BBB", "C " + c);
                            laco.dem = 0;
+                           i++;
+                           laco.notifyAll();
+                       }else{
+                           try {
+                               laco.wait();
+                           } catch (InterruptedException e) {
+                               e.printStackTrace();
+                           }
                        }
                     }
                 }
